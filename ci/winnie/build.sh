@@ -14,7 +14,7 @@ JENKINS_DEBUG=1
 #export PG_VER=
 #export PGHOST=
 #export PGPORT=
-#export PGROUTING_VER=
+#export VRPROUTING_VER=
 #export POSTIGS_VER=
 #GCC_TYPE=
 #export GIT_COMMIT=
@@ -32,7 +32,7 @@ then
     echo "PG_VER ${PG_VER}"
     echo "PGHOST ${PGHOST}"
     echo "PGPORT ${PGPORT}"
-    echo "PGROUTING_VER ${PGROUTING_VER}"
+    echo "VRPROUTING_VER ${VRPROUTING_VER}"
     echo "POSTGIS_VER ${POSTGIS_VER}"
     echo "GCC_TYPE ${GCC_TYPE}"
     echo "GIT_COMMIT ${GIT_COMMIT}"
@@ -53,7 +53,7 @@ export PATHOLD=$PATH
 #export PATHOLD="/mingw/bin:/mingw/include:/c/Windows/system32:/c/Windows"
 export PGWINVER=${PG_VER}w${OS_BUILD}${GCC_TYPE}edb
 export PATH="${PATHOLD}:/usr/bin:${PGPATH}/bin:${PGPATH}/lib:${PGPATH}/include"
-export PATH="${PROJECTS}/rel-libiconv-1.13.1w${OS_BUILD}${GCC_TYPE}/include:${PATH}"
+export PATH="${PROJECTS}/rel-libiconv-1.15.1w${OS_BUILD}${GCC_TYPE}/include:${PATH}"
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
@@ -95,10 +95,10 @@ cmake --version
 
 echo "PATH ${PATH}"
 
-cd "${PROJECTS}/pgrouting" || exit 1
-rm -rf "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
-mkdir "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
-cd "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}" || exit 1
+cd "${PROJECTS}/vrprouting" || exit 1
+rm -rf "build${VRPROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
+mkdir "build${VRPROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
+cd "build${VRPROUTING_VER}w${OS_BUILD}${GCC_TYPE}" || exit 1
 
 
 #---------------
@@ -107,8 +107,8 @@ echo "***************************"
 echo "Current contents of PGPATH ${PGPATH}"
 echo "***************************"
 #---------------
-ls "${PGPATH}/lib/libpgrouting*"
-ls "${PGPATH}/share/extension/pgrouting*"
+ls "${PGPATH}/lib/libvrprouting*"
+ls "${PGPATH}/share/extension/vrprouting*"
 
 #---------------
 echo
@@ -116,13 +116,13 @@ echo "***************************"
 echo "Current contents of PGPATHEDB ${PGPATHEDB}"
 echo "***************************"
 #---------------
-ls "${PGPATHEDB}/lib/libpgrouting*"
-ls "${PGPATHEDB}/share/extension/pgrouting*"
+ls "${PGPATHEDB}/lib/libvrprouting*"
+ls "${PGPATHEDB}/share/extension/vrprouting*"
 
-rm "${PGPATH}/lib/libpgrouting*"
-rm "${PGPATH}/share/extension/pgrouting*"
-rm "${PGPATHEDB}/lib/libpgrouting*"
-rm "${PGPATHEDB}/share/extension/pgrouting*"
+rm "${PGPATH}/lib/libvrprouting*"
+rm "${PGPATH}/share/extension/vrprouting*"
+rm "${PGPATHEDB}/lib/libvrprouting*"
+rm "${PGPATHEDB}/share/extension/vrprouting*"
 
 #---------------
 echo
@@ -130,8 +130,8 @@ echo "***************************"
 echo "After removing in PGPATH ${PGPATH}"
 echo "***************************"
 #---------------
-ls "${PGPATH}"/lib/libpgrouting*
-ls "${PGPATH}"/share/extension/pgrouting*
+ls "${PGPATH}"/lib/libvrprouting*
+ls "${PGPATH}"/share/extension/vrprouting*
 
 #---------------
 echo
@@ -139,8 +139,8 @@ echo "***************************"
 echo "After removing in PGPATHEDB ${PGPATHEDB}"
 echo "***************************"
 #---------------
-ls "${PGPATHEDB}"/lib/libpgrouting*
-ls "${PGPATHEDB}"/share/extension/pgrouting*
+ls "${PGPATHEDB}"/lib/libvrprouting*
+ls "${PGPATHEDB}"/share/extension/vrprouting*
 cmake --version
 
 cmake -G "MSYS Makefiles" -DCMAKE_VERBOSE_MAKEFILE=ON \
@@ -148,7 +148,7 @@ cmake -G "MSYS Makefiles" -DCMAKE_VERBOSE_MAKEFILE=ON \
  -DBoost_USE_STATIC_LIBS=ON \
  -DBoost_USE_MULTITHREADED=ON \
  -DCMAKE_BUILD_TYPE=Release \
- "../branches/${PGROUTING_VER}"
+ "../branches/${VRPROUTING_VER}"
 
 #---------------
 echo
@@ -172,8 +172,8 @@ echo "***************************"
 echo "Current contents of PGPATH ${PGPATH}"
 echo "***************************"
 #---------------
-ls "${PGPATH}/lib/libpgrouting*"
-ls "${PGPATH}/share/extension/pgrouting*"
+ls "${PGPATH}/lib/libvrprouting*"
+ls "${PGPATH}/share/extension/vrprouting*"
 
 #---------------
 echo
@@ -182,14 +182,14 @@ echo "Current contents of PGPATHEDB ${PGPATHEDB}"
 echo Should be empty
 echo "***************************"
 #---------------
-ls "${PGPATHEDB}"/lib/libpgrouting*
-ls "${PGPATHEDB}"/share/extension/pgrouting*
+ls "${PGPATHEDB}"/lib/libvrprouting*
+ls "${PGPATHEDB}"/share/extension/vrprouting*
 
 
 #we need uninstall and reinstall copy to VC++ EDB instance if we want to test on standard Windows installed versions
 #cp *.dll ${PGPATHEDB}/lib/  #TODO remove this once we fix so the .dlls are created in lib folder
 cp "${PGPATH}/lib/*.dll" "${PGPATHEDB}/lib/"
-cp "${PGPATH}/share/extension/pgrouting*.sql" "${PGPATHEDB}/share/extension/"
+cp "${PGPATH}/share/extension/vrprouting*.sql" "${PGPATHEDB}/share/extension/"
 cp "${PGPATH}/share/extension/*.control" "${PGPATHEDB}/share/extension/"
 
 #---------------
@@ -198,10 +198,10 @@ echo "***************************"
 echo "After copying to PGPATHEDB ${PGPATHEDB}"
 echo "***************************"
 #---------------
-ls "${PGPATHEDB}/lib/libpgrouting*"
-ls "${PGPATHEDB}/share/extension/pgrouting*"
+ls "${PGPATHEDB}/lib/libvrprouting*"
+ls "${PGPATHEDB}/share/extension/vrprouting*"
 
-cd "${PROJECTS}/pgrouting/branches/${PGROUTING_VER}" || exit 1
+cd "${PROJECTS}/vrprouting/branches/${VRPROUTING_VER}" || exit 1
 
 if [ "${OS_BUILD}" -eq 32 ]
 then
@@ -216,5 +216,5 @@ else
 
 fi
 
-cd "${PROJECTS}/pgrouting/build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}/lib" || exit 1
+cd "${PROJECTS}/vrprouting/build${VRPROUTING_VER}w${OS_BUILD}${GCC_TYPE}/lib" || exit 1
 strip ./*.dll

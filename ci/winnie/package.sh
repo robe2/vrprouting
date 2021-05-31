@@ -5,8 +5,8 @@
 #export PG_VER=9.2
 #export PGHOST=localhost
 #export PGPORT=8442
-#export PGROUTING_VER=2.0
-#export PGROUTING_MICRO_VER=0dev
+#export VRPROUTING_VER=2.0
+#export VRPROUTING_MICRO_VER=0dev
 #export GIT_COMMIT=whatever
 
 #This line is commented out on build file
@@ -42,18 +42,18 @@ else
     echo "$MPFR_VER"
 fi;
 
-#cd ${PROJECTS}/pgrouting/branches/${PGROUTING_VER}/build/lib
-cd "${PROJECTS}/pgrouting/build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}" || exit 1
+#cd ${PROJECTS}/VRPROUTING/branches/${VRPROUTING_VER}/build/lib
+cd "${PROJECTS}/VRPROUTING/build${VRPROUTING_VER}w${OS_BUILD}${GCC_TYPE}" || exit 1
 
 export REL_PGVER=${PG_VER//./} #strip the period
 
-if [[ "$PGROUTING_MICRO_VER"  == *SVN* || "$PGROUTING_MICRO_VER"  == *dev* ]] ; then
-  export RELDIR=${PROJECTS}/pgrouting/builds/${PGROUTING_VER}
-  export RELVERDIR=pgrouting-pg${REL_PGVER}-binaries-${PGROUTING_VER}.${PGROUTING_MICRO_VER}w${OS_BUILD}${GCC_TYPE}
+if [[ "$VRPROUTING_MICRO_VER"  == *SVN* || "$VRPROUTING_MICRO_VER"  == *dev* ]] ; then
+  export RELDIR=${PROJECTS}/VRPROUTING/builds/${VRPROUTING_VER}
+  export RELVERDIR=VRPROUTING-pg${REL_PGVER}-binaries-${VRPROUTING_VER}.${VRPROUTING_MICRO_VER}w${OS_BUILD}${GCC_TYPE}
 else
 	#tagged version -- official release
-	export RELDIR=${PROJECTS}/pgrouting/builds/${PGROUTING_VER}
-	export RELVERDIR=pgrouting-pg${REL_PGVER}-binaries-${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}
+	export RELDIR=${PROJECTS}/VRPROUTING/builds/${VRPROUTING_VER}
+	export RELVERDIR=VRPROUTING-pg${REL_PGVER}-binaries-${VRPROUTING_VER}w${OS_BUILD}${GCC_TYPE}
 fi;
 
 
@@ -68,11 +68,11 @@ mkdir -p "${outdir}/share/extension"
 mkdir "${outdir}/bin"
 mkdir "${outdir}/lib"
 
-cd "${PROJECTS}/pgrouting/build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}/sql" || exit 1
+cd "${PROJECTS}/VRPROUTING/build${VRPROUTING_VER}w${OS_BUILD}${GCC_TYPE}/sql" || exit 1
 cp ./*.sql "${outdir}/share/extension"
-cp "${PostgreSQL_ROOT}/share/extension/pgrouting.control" "${outdir}/share/extension"
+cp "${PostgreSQL_ROOT}/share/extension/vrprouting.control" "${outdir}/share/extension"
 
-cd "${PROJECTS}/pgrouting/build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}/lib" || exit 1
+cd "${PROJECTS}/VRPROUTING/build${VRPROUTING_VER}w${OS_BUILD}${GCC_TYPE}/lib" || exit 1
 strip ./*.dll
 
 cp -r ./*.dll "${outdir}/lib"
@@ -86,7 +86,7 @@ fi
 cp -r "${RELDIR}/packaging_notes/*" "${RELDIR}/${RELVERDIR}/"
 
 echo "The git commit is ${GIT_COMMIT}"
-echo "pgRouting http://pgrouting.org : ${PGROUTING_VER}.${PGROUTING_MICRO_VER} ${GIT_COMMIT}" > "${verfile}"
+echo "VRPROUTING http://pgrouting.org : ${VRPROUTING_VER}.${VRPROUTING_MICRO_VER} ${GIT_COMMIT}" > "${verfile}"
 {
     echo "PostgreSQL http://www.postgresql.org : ${PG_VER} ${OS_BUILD} ${GCC_TYPE}"
     echo "CGAL http://www.cgal.org : ${CGAL_VER}"
